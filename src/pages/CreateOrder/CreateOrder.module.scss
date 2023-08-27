@@ -1,0 +1,83 @@
+.createOrder {
+    display: flex;
+    flex-direction: column;
+}
+
+.orderInfo {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.formField {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 12px 0;
+
+    label {
+        font-weight: 600;
+        &:hover {
+            cursor: default;
+        }
+    }
+
+    input {
+        padding: 6px;
+        background-color: #f5f6f7;
+        border: 1px solid #f5f6f7;
+        border-radius: 4px;
+
+        &:focus {
+            border: 1px solid rgb(73, 73, 73);
+        }
+    }
+    &:not(:first-child) {
+        margin-left: 20px;
+    }
+}
+
+.orderForms {
+    display: grid;
+    grid-template-columns: 70% 30%;
+}
+
+.productsList {
+    width: 100%;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(47%, 2fr));
+    gap: 12px;
+    padding-right: 6px;
+    // max-height: 275px;
+    height: calc(100vh - 410px);
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: rgb(204, 204, 204);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #3d563f;
+    }
+}
+
+.productsFooter {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    button {
+        padding: 12px;
+    }
+}

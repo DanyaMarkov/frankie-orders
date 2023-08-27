@@ -1,0 +1,35 @@
+.link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 25px 20px;
+    color: black;
+    gap: 10px;
+    transition: 0.4s;
+    font-size: 18px;
+    font-weight: 500;
+
+    svg {
+        fill: black;
+    }
+
+    &:hover {
+        transition: 0.4s;
+        background-color: #c0f1db;
+    }
+}
+
+.activeLink {
+    @extend .link;
+    background-color: #4bc08b;
+    color: white;
+    svg {
+        fill: white;
+    }
+
+    &:hover {
+        transition: 0.4s;
+        background-color: #1ba557;
+    }
+}

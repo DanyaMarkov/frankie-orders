@@ -1,0 +1,11 @@
+.orders {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ordersHeader {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}

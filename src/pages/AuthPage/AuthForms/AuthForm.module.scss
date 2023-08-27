@@ -1,0 +1,53 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.formField {
+    display: flex;
+    flex-direction: column;
+
+    input {
+        border: none;
+        border-bottom: 1px solid #000;
+        background-color: transparent;
+        color: inherit;
+        outline: none;
+        font-size: 20px;
+        padding-bottom: 10px;
+
+        &:focus {
+            border-bottom: 1px solid rgb(117, 117, 117);
+        }
+    }
+
+    span {
+        color: red;
+    }
+}
+
+.actionButton {
+    background-image: linear-gradient(to right, #5089ad 0%, #4e66bd 51%, #314755 100%);
+    padding: 15px 45px;
+    text-align: center;
+    font-size: 14px;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 30px;
+    width: 100%;
+
+    &:hover {
+        background-position: right center;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    &:focus {
+        filter: brightness(1.3);
+    }
+}
