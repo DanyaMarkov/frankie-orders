@@ -1,35 +1,28 @@
 import authStore  from '@store/auth-store';
-// import { mainApiUrl } from './variables';
-// import axios from "axios"
-
-const generateRandomToken = (length: number): string => {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return result;
-};
+import { axiosInstance } from './variables';
 
 export const authUser = async (data: any) => {
-  try {
-    // const response = await axiosInstance.post(`/auth/sign-in`, data);
-    let token = '';
-    if (data.username === '111' && data.password === '111') {
-      token = generateRandomToken(10);
-    } else {
-      token = 'false';
-    }
-    return token;
-    // return response.data; // Возвращаем данные из ответа
-  } catch (error) {
-    console.error(error);
-    throw new Error('Ошибка при отправке данных на сервер');
+  const responseData = await axiosInstance.post('/auth/sign-in', data).then(response => {
+    return response;
+  })
+    .catch(error => {
+    console.log('error: ', error);
+  });
+
+  if (responseData) {
+    return responseData.data.token;
   }
 };
 
-export const registerUser = () => {
-  console.log('qqq')
+export const registerUser = async (data: any) => {
+  const responseData = await axiosInstance.post('/auth/sign-up', data).then(response => {
+    return response;
+  })
+    .catch(error => {
+    console.log('error: ', error);
+  });
+
+  return responseData;
 }
 
 export const logout = () => {

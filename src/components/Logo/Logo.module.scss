@@ -34,7 +34,7 @@
 }
 
 .logo:hover {
-    cursor: pointer;
+    cursor: default;
     .logoImage {
         animation-duration: 1s;
         animation-name: hoverLogo;

@@ -1,7 +1,7 @@
 import style from "./CustomTable.module.scss";
 import { ICustomTableProps } from "./types";
 
-const CustomTable: React.FC<ICustomTableProps> = ({ tableData, tableConfig, tableActions }) => {
+const CustomTable: React.FC<ICustomTableProps> = ({ tableData, tableConfig, tableActions, loading }) => {
     const getHeadTitle = (fieldName: string): string | null => {
         let headTitle = "";
         for (const configElement of tableConfig) {
@@ -16,7 +16,15 @@ const CustomTable: React.FC<ICustomTableProps> = ({ tableData, tableConfig, tabl
         return null;
     };
 
-    // const tableData = tableData.
+    if (loading) {
+        return <div>Загрузка..</div>;
+    }
+
+    console.log("tableData", JSON.stringify(tableData));
+
+    if (tableData.length === 0) {
+        return <div>Данные не найдены</div>;
+    }
 
     return (
         <table className={style.table}>

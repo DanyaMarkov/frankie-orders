@@ -11,14 +11,34 @@ import { tableOrdersConfig } from "./tableConfig";
 
 const Orders = observer(() => {
     const [searchValue, setSearchValue] = useState<string>("");
+    const [filteredOrders, setFilteredOrders] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const { getOrders, ordersList } = ordersStore;
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        getOrders();
+        getOrders().then((response) => {
+            if (response) {
+                setLoading(false);
+            } else {
+                setLoading(false);
+            }
+        });
     }, []);
+
+    useEffect(() => {
+        if (searchValue.length > 0) {
+            setFilteredOrders(
+                ordersList.filter((el: any) => {
+                    return el.name.toLowerCase().includes(searchValue.toLowerCase());
+                })
+            );
+            return;
+        }
+        setFilteredOrders(ordersList);
+    }, [searchValue, loading]);
 
     return (
         <ContentWrapper title="Заказы">
@@ -31,7 +51,8 @@ const Orders = observer(() => {
                 </div>
                 <CustomTable
                     tableConfig={tableOrdersConfig}
-                    tableData={ordersList}
+                    tableData={filteredOrders}
+                    loading={loading}
                     tableActions={[
                         {
                             buttonTitle: "Открыть",

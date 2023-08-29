@@ -8,12 +8,15 @@ import ContentWrapper from "@components/ContentWrapper/ContentWrapper";
 
 const OrderInfoPage = observer(() => {
     const [orderId, setOrderId] = useState<Nullable<number>>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     let { id } = useParams();
+
     const { currentOrder, getOrderInfo } = ordersStore;
+
     useEffect(() => {
         if (id) {
-            setOrderId(parseInt(id, 10));
+            setOrderId(Number(id));
         } else {
             alert("Не удалось получить информацию о заказе с таким ID");
         }
@@ -21,13 +24,14 @@ const OrderInfoPage = observer(() => {
 
     useEffect(() => {
         if (orderId) {
-            getOrderInfo(orderId);
+            setLoading(true);
+            getOrderInfo(orderId).then(() => setLoading(false));
         }
     }, [orderId]);
 
     const orderName = `Заказ №${id}`;
 
-    if (!currentOrder.items) {
+    if (!currentOrder.items || loading) {
         return <div>Загрузка..</div>;
     }
 

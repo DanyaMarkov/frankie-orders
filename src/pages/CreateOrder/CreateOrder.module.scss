@@ -30,7 +30,8 @@
         }
     }
 
-    input {
+    input,
+    select {
         padding: 6px;
         background-color: #f5f6f7;
         border: 1px solid #f5f6f7;
@@ -57,8 +58,7 @@
     grid-template-columns: repeat(auto-fill, minmax(47%, 2fr));
     gap: 12px;
     padding-right: 6px;
-    // max-height: 275px;
-    height: calc(100vh - 410px);
+    height: calc(100vh - 420px);
 
     &::-webkit-scrollbar {
         width: 10px;
@@ -78,6 +78,50 @@
     flex-direction: row;
     justify-content: start;
     button {
-        padding: 12px;
+        padding: 6px 12px;
     }
+}
+
+.comments {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.commentsList {
+    width: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-right: 6px;
+    height: calc(100vh - 420px);
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: rgb(204, 204, 204);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #3d563f;
+    }
+}
+
+.createOrderButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    button {
+        padding: 6px 40px;
+    }
+}
+
+.successCreate {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }

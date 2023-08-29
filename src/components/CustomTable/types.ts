@@ -6,5 +6,6 @@ export type TableActionsType = {
 export interface ICustomTableProps {
     tableData: any[];
     tableConfig: any[];
+    loading?: boolean;
     tableActions: TableActionsType[];
 }

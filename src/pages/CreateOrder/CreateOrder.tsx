@@ -3,6 +3,7 @@ import CustomButton from "@components/CustomButton/CustomButton";
 import dictionariesStore from "@store/dictionaries-store";
 import ordersStore from "@store/orders-store";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Comment from "./Comment/Comment";
 import style from "./CreateOrder.module.scss";
 import Product from "./Product/Product";
@@ -11,6 +12,11 @@ const CreateOrder = () => {
     const [orderName, setOrderName] = useState<string>("");
     const [warehouse, setWarehouse] = useState<number>(1);
     const [totalCost, setTotalCost] = useState<number>(0);
+
+    const [isCreate, setIsCreate] = useState<boolean>(false);
+    const [createError, setCreateError] = useState<string>("");
+
+    const navigate = useNavigate();
 
     const [products, setProducts] = useState<any>({
         0: {
@@ -21,13 +27,16 @@ const CreateOrder = () => {
             size: "",
         },
     });
-    const [comments, setComments] = useState<any>({});
+    const [comments, setComments] = useState<any>({
+        0: {
+            comment: "",
+        },
+    });
 
-    const submitCreareOrder = (event: any) => {
+    const submitCreareOrder = async (event: any) => {
         event.preventDefault();
 
         let itemsArr: any = Object.keys(products).map((productKey) => {
-            console.log(" product[key]", products[productKey]);
             return products[productKey];
         });
 
@@ -35,12 +44,29 @@ const CreateOrder = () => {
             return comments[commentKey];
         });
 
-        ordersStore.createOrder({
+        // const responseData = ordersStore.createOrder({
+        //     name: orderName,
+        //     warehouse_id: warehouse,
+        //     items: itemsArr,
+        //     comments: commentsArr,
+        // });
+        const responseData = await ordersStore.createOrder({
             name: orderName,
             warehouse_id: warehouse,
             items: itemsArr,
             comments: commentsArr,
         });
+        console.log("responseData", responseData);
+
+        if (responseData) {
+            setIsCreate(true);
+        } else {
+            setCreateError("Ошибка при создании Заполните необходимые поля");
+
+            setTimeout(() => {
+                setCreateError("");
+            }, 2400);
+        }
     };
 
     const changeProduct = (productIndex: any, updatedObject: any) => {
@@ -85,7 +111,6 @@ const CreateOrder = () => {
     };
 
     const changeComment = (productIndex: any, updatedObject: any) => {
-        // Обновление объекта в стейте
         setComments((prevState: any) => ({
             ...prevState,
             [productIndex]: updatedObject,
@@ -124,6 +149,19 @@ const CreateOrder = () => {
         setComments(rest);
     };
 
+    console.log("isCreate", isCreate);
+
+    if (isCreate) {
+        return (
+            <div className={style.successCreate}>
+                <div>Заказ успешно создан!</div>
+                <CustomButton type="button" onClick={() => navigate("/orders")}>
+                    Вернуться к заказам
+                </CustomButton>
+            </div>
+        );
+    }
+
     return (
         <ContentWrapper title="Создание заказа" backButton>
             <div className={style.createOrder}>
@@ -153,51 +191,64 @@ const CreateOrder = () => {
                     </div>
                     <div className={style.orderForms}>
                         <div className={style.products}>
-                            <div className={style.productsList}>
-                                {Object.keys(products).length > 0 &&
-                                    Object.keys(products).map((key: any, index: any) => {
-                                        return (
-                                            <Product
-                                                key={key}
-                                                product={products[key]}
-                                                productIndex={index}
-                                                productKey={key}
-                                                changeProduct={changeProduct}
-                                                removeProduct={removeProduct}
-                                            />
-                                        );
-                                    })}
+                            <div>
+                                <h3>Товары</h3>
+                                <div className={style.productsList}>
+                                    {Object.keys(products).length > 0 &&
+                                        Object.keys(products).map((key: any, index: any) => {
+                                            return (
+                                                <Product
+                                                    key={key}
+                                                    product={products[key]}
+                                                    productIndex={index}
+                                                    productKey={key}
+                                                    changeProduct={changeProduct}
+                                                    removeProduct={removeProduct}
+                                                />
+                                            );
+                                        })}
+                                </div>
                             </div>
 
                             <div className={style.productsFooter}>
-                                <CustomButton onClick={() => addProduct()}>Добавить товар</CustomButton>
+                                <CustomButton type="button" onClick={() => addProduct()}>
+                                    Добавить товар
+                                </CustomButton>
                             </div>
                         </div>
                         <div className={style.comments}>
-                            <h3>Комментарии</h3>
-                            <div className={style.commentsList}>
-                                {Object.keys(comments).length > 0 &&
-                                    Object.keys(comments).map((key: any, index: any) => {
-                                        return (
-                                            <Comment
-                                                key={key}
-                                                comment={comments[key]}
-                                                productIndex={index}
-                                                productKey={key}
-                                                changeProduct={changeComment}
-                                                removeProduct={removeComment}
-                                            />
-                                        );
-                                    })}
+                            <div>
+                                <h3>Комментарии</h3>
+                                <div className={style.commentsList}>
+                                    {Object.keys(comments).length > 0 &&
+                                        Object.keys(comments).map((key: any, index: any) => {
+                                            return (
+                                                <Comment
+                                                    key={key}
+                                                    comment={comments[key]}
+                                                    productIndex={index}
+                                                    productKey={key}
+                                                    changeProduct={changeComment}
+                                                    removeProduct={removeComment}
+                                                />
+                                            );
+                                        })}
+                                </div>
                             </div>
 
                             <div className={style.productsFooter}>
-                                <CustomButton onClick={addComment}>Добавить комментарий</CustomButton>
+                                <CustomButton type="button" onClick={addComment}>
+                                    Добавить комментарий
+                                </CustomButton>
                             </div>
                         </div>
                     </div>
-
-                    <CustomButton type="submit">Создать заказ</CustomButton>
+                    <div className={style.createOrderButton}>
+                        <div>{createError}</div>
+                        <CustomButton type="submit" color="#f1463b">
+                            Создать заказ
+                        </CustomButton>
+                    </div>
                 </form>
             </div>
         </ContentWrapper>

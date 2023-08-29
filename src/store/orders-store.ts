@@ -1,6 +1,7 @@
 import { getOrderInfoById } from './../api/orders';
 import { getOrdersApi } from "@api/orders";
 import { makeAutoObservable } from "mobx";
+import { axiosInstance } from '@api/variables';
 
 class OrdersStore {
     ordersList = [];
@@ -19,7 +20,10 @@ class OrdersStore {
 
     getOrders = async () => {
         const data = await getOrdersApi();
-        this.setOrdersList(data);        
+
+        if (data) {
+            this.setOrdersList(data);        
+        }
         return data;
     }
 
@@ -30,9 +34,23 @@ class OrdersStore {
     }
 
     createOrder = async (newOrder: any) => {
-        console.log('newOrder', newOrder)
-        // const data = await createNewOrder(newOrder);
+        try {    
+            const serverResponse: any = await axiosInstance.post('/api/order', newOrder).then(response => {
+            //   console.log('response ====', response);
+              return response;
+            })
+              .catch(error => {
+              console.log('error: ', error);
+            });
+        
+            return serverResponse;
+            
+          } catch (error) {
+            console.error(error);
+            throw new Error('Ошибка при отправке данных на сервер');
+        }
     }
+    
 }
 
 export default new OrdersStore();

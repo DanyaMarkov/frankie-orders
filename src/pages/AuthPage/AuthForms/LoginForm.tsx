@@ -34,22 +34,14 @@ const LoginForm = observer(() => {
     };
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(" await authUser");
-
         const response = await authUser(data);
-
-        if (response.length === 10) {
-            // console.log("response", response);
+        if (response) {
             localStorage.setItem("authToken", response);
             localStorage.setItem("userName", data.username);
             setAuthToken(response);
             setAuthUser(data.username);
         } else {
             setAuthError();
-            // setError("loginError", {
-            //     type: "manual", // тип ошибки
-            //     message: "Неудачная попытка авторизации", // текст сообщения об ошибке
-            // });
         }
     };
 

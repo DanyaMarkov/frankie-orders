@@ -29,18 +29,20 @@ const Comment: React.FC<ICommentProps> = ({ comment, productIndex, changeProduct
     }, [productObj]);
 
     return (
-        <div className={style.product}>
-            <div className={style.productHeader}>
+        <div className={style.comment}>
+            <div className={style.commentHeader}>
                 <h2>Комментарий {productIndex + 1}</h2>
-                <CustomButton color="#FB3A3A" onClick={() => removeProduct(productKey)}>
-                    Удалить
-                </CustomButton>
+                {productIndex > 0 && (
+                    <CustomButton color="#FB3A3A" onClick={() => removeProduct(productKey)}>
+                        Удалить
+                    </CustomButton>
+                )}
             </div>
             <div className={style.mainInfo}>
                 <div className={style.formField}>
-                    <label>Комментарий </label>
                     <input
                         type="text"
+                        placeholder="Текст комментария.."
                         value={productObj.comment}
                         onChange={(e) => changeLocal("comment", e.target.value)}
                     />

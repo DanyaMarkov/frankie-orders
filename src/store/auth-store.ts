@@ -1,3 +1,4 @@
+import { registerUser } from '@api/auth';
 import { makeAutoObservable } from "mobx";
 
 class AuthStore {
@@ -13,6 +14,14 @@ class AuthStore {
     }
     setAuthToken = (authToken: string) => {
         this.authToken = authToken;
+    }
+
+    async registerNewUser(data: any) {
+        const response = await registerUser(data);
+        console.log('response ....', response)
+        // if (response) {
+        //     return response.data.code
+        // }
     }
 }
 
